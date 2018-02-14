@@ -8,20 +8,26 @@
 
 /* Begin PBXBuildFile section */
 		B764FBAA2034361A00355016 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B764FBA92034361A00355016 /* AppDelegate.swift */; };
-		B764FBAC2034361A00355016 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B764FBAB2034361A00355016 /* RootViewController.swift */; };
-		B764FBAF2034361A00355016 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B764FBAD2034361A00355016 /* Main.storyboard */; };
+		B764FBAC2034361A00355016 /* PermissionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B764FBAB2034361A00355016 /* PermissionsViewController.swift */; };
+		B764FBAF2034361A00355016 /* Permissions.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B764FBAD2034361A00355016 /* Permissions.storyboard */; };
 		B764FBB12034361A00355016 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B764FBB02034361A00355016 /* Assets.xcassets */; };
 		B764FBB42034361A00355016 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B764FBB22034361A00355016 /* LaunchScreen.storyboard */; };
+		B764FBC120343D6100355016 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B764FBC020343D6100355016 /* Main.storyboard */; };
+		B764FBC320343D9A00355016 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B764FBC220343D9A00355016 /* RootViewController.swift */; };
+		B764FBC72034404A00355016 /* MemoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B764FBC62034404A00355016 /* MemoryCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		B764FBA62034361A00355016 /* Happy Days.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Happy Days.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B764FBA92034361A00355016 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B764FBAB2034361A00355016 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
-		B764FBAE2034361A00355016 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B764FBAB2034361A00355016 /* PermissionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsViewController.swift; sourceTree = "<group>"; };
+		B764FBAE2034361A00355016 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Permissions.storyboard; sourceTree = "<group>"; };
 		B764FBB02034361A00355016 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B764FBB32034361A00355016 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B764FBB52034361A00355016 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B764FBC020343D6100355016 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		B764FBC220343D9A00355016 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		B764FBC62034404A00355016 /* MemoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +60,7 @@
 		B764FBA82034361A00355016 /* Happy Days */ = {
 			isa = PBXGroup;
 			children = (
+				B764FBC42034402600355016 /* UIKit */,
 				B764FBBF203436EE00355016 /* Configuration */,
 				B764FBBE203436E500355016 /* Resources */,
 				B764FBBD203436DA00355016 /* Storyboards */,
@@ -74,7 +81,8 @@
 		B764FBBC203436B000355016 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				B764FBAB2034361A00355016 /* RootViewController.swift */,
+				B764FBAB2034361A00355016 /* PermissionsViewController.swift */,
+				B764FBC220343D9A00355016 /* RootViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -83,7 +91,8 @@
 			isa = PBXGroup;
 			children = (
 				B764FBB22034361A00355016 /* LaunchScreen.storyboard */,
-				B764FBAD2034361A00355016 /* Main.storyboard */,
+				B764FBAD2034361A00355016 /* Permissions.storyboard */,
+				B764FBC020343D6100355016 /* Main.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -102,6 +111,22 @@
 				B764FBB52034361A00355016 /* Info.plist */,
 			);
 			path = Configuration;
+			sourceTree = "<group>";
+		};
+		B764FBC42034402600355016 /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				B764FBC52034402B00355016 /* CollectionViewCell */,
+			);
+			path = UIKit;
+			sourceTree = "<group>";
+		};
+		B764FBC52034402B00355016 /* CollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				B764FBC62034404A00355016 /* MemoryCell.swift */,
+			);
+			path = CollectionViewCell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -165,7 +190,8 @@
 			files = (
 				B764FBB42034361A00355016 /* LaunchScreen.storyboard in Resources */,
 				B764FBB12034361A00355016 /* Assets.xcassets in Resources */,
-				B764FBAF2034361A00355016 /* Main.storyboard in Resources */,
+				B764FBAF2034361A00355016 /* Permissions.storyboard in Resources */,
+				B764FBC120343D6100355016 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,20 +202,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B764FBAC2034361A00355016 /* RootViewController.swift in Sources */,
+				B764FBC72034404A00355016 /* MemoryCell.swift in Sources */,
+				B764FBAC2034361A00355016 /* PermissionsViewController.swift in Sources */,
 				B764FBAA2034361A00355016 /* AppDelegate.swift in Sources */,
+				B764FBC320343D9A00355016 /* RootViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		B764FBAD2034361A00355016 /* Main.storyboard */ = {
+		B764FBAD2034361A00355016 /* Permissions.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				B764FBAE2034361A00355016 /* Base */,
 			);
-			name = Main.storyboard;
+			name = Permissions.storyboard;
 			sourceTree = "<group>";
 		};
 		B764FBB22034361A00355016 /* LaunchScreen.storyboard */ = {
