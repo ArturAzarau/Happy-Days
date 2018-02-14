@@ -71,7 +71,13 @@
                             <outlet property="delegate" destination="7xh-yt-a4n" id="jLv-AS-6SN"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" title="Happy Days" id="5Cs-Wc-LTX"/>
+                    <navigationItem key="navigationItem" title="Happy Days" id="5Cs-Wc-LTX">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="cTJ-UF-SgD">
+                            <connections>
+                                <action selector="addTapped:" destination="7xh-yt-a4n" id="dTg-Ob-x1A"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VeM-I7-laV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
