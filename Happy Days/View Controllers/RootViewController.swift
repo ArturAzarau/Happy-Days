@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import AVFoundation
+import Photos
+import Speech
 
 private enum ReuseIdentifier {
     static let cell = "Memory"
@@ -14,34 +17,36 @@ private enum ReuseIdentifier {
 }
 
 final class RootViewController: UICollectionViewController {
+    
+    // MARK: - Life cycle
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        checkPermissions()
+    }
+
+    // MARK: -
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
         // Register cell classes
         self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: ReuseIdentifier.cell)
-
-        // Do any additional setup after loading the view.
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    // MARK: - Methods
+    
+    private func checkPermissions() {
+        let photoAuthorized = PHPhotoLibrary.authorizationStatus() == .authorized
+        let recordingAuthorized = AVAudioSession.sharedInstance().recordPermission() == .granted
+        let transcribeAuthorized = SFSpeechRecognizer.authorizationStatus() == . authorized
+        
+        let authorized = photoAuthorized && recordingAuthorized && transcribeAuthorized
+        
+        if !authorized {
+            let vc = UIStoryboard(name: "Permissions", bundle: Bundle.main).instantiateViewController(withIdentifier: "PermissionsVC")
+            navigationController?.present(vc, animated: true)
+        }
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    
     // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -62,36 +67,5 @@ final class RootViewController: UICollectionViewController {
     
         return cell
     }
-
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-    
-    }
-    */
 
 }
