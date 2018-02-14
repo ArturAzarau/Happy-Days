@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		B764FBAA2034361A00355016 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B764FBA92034361A00355016 /* AppDelegate.swift */; };
-		B764FBAC2034361A00355016 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B764FBAB2034361A00355016 /* ViewController.swift */; };
+		B764FBAC2034361A00355016 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B764FBAB2034361A00355016 /* RootViewController.swift */; };
 		B764FBAF2034361A00355016 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B764FBAD2034361A00355016 /* Main.storyboard */; };
 		B764FBB12034361A00355016 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B764FBB02034361A00355016 /* Assets.xcassets */; };
 		B764FBB42034361A00355016 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B764FBB22034361A00355016 /* LaunchScreen.storyboard */; };
@@ -17,7 +17,7 @@
 /* Begin PBXFileReference section */
 		B764FBA62034361A00355016 /* Happy Days.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Happy Days.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B764FBA92034361A00355016 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B764FBAB2034361A00355016 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		B764FBAB2034361A00355016 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		B764FBAE2034361A00355016 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B764FBB02034361A00355016 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B764FBB32034361A00355016 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -54,14 +54,54 @@
 		B764FBA82034361A00355016 /* Happy Days */ = {
 			isa = PBXGroup;
 			children = (
-				B764FBA92034361A00355016 /* AppDelegate.swift */,
-				B764FBAB2034361A00355016 /* ViewController.swift */,
-				B764FBAD2034361A00355016 /* Main.storyboard */,
-				B764FBB02034361A00355016 /* Assets.xcassets */,
-				B764FBB22034361A00355016 /* LaunchScreen.storyboard */,
-				B764FBB52034361A00355016 /* Info.plist */,
+				B764FBBF203436EE00355016 /* Configuration */,
+				B764FBBE203436E500355016 /* Resources */,
+				B764FBBD203436DA00355016 /* Storyboards */,
+				B764FBBC203436B000355016 /* View Controllers */,
+				B764FBBB2034368D00355016 /* Application Delegate */,
 			);
 			path = "Happy Days";
+			sourceTree = "<group>";
+		};
+		B764FBBB2034368D00355016 /* Application Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				B764FBA92034361A00355016 /* AppDelegate.swift */,
+			);
+			path = "Application Delegate";
+			sourceTree = "<group>";
+		};
+		B764FBBC203436B000355016 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				B764FBAB2034361A00355016 /* RootViewController.swift */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		B764FBBD203436DA00355016 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				B764FBB22034361A00355016 /* LaunchScreen.storyboard */,
+				B764FBAD2034361A00355016 /* Main.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		B764FBBE203436E500355016 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B764FBB02034361A00355016 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		B764FBBF203436EE00355016 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				B764FBB52034361A00355016 /* Info.plist */,
+			);
+			path = Configuration;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -136,7 +176,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B764FBAC2034361A00355016 /* ViewController.swift in Sources */,
+				B764FBAC2034361A00355016 /* RootViewController.swift in Sources */,
 				B764FBAA2034361A00355016 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -276,7 +316,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9YH3LZQ69V;
-				INFOPLIST_FILE = "Happy Days/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Happy Days/Configuration/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.arturazarau.Happy-Days";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -291,7 +331,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9YH3LZQ69V;
-				INFOPLIST_FILE = "Happy Days/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Happy Days/Configuration/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.arturazarau.Happy-Days";
 				PRODUCT_NAME = "$(TARGET_NAME)";
