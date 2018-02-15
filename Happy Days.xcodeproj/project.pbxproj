@@ -16,6 +16,7 @@
 		B764FBC320343D9A00355016 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B764FBC220343D9A00355016 /* RootViewController.swift */; };
 		B764FBC72034404A00355016 /* MemoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B764FBC62034404A00355016 /* MemoryCell.swift */; };
 		B764FBCA2035CD9500355016 /* PermissionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B764FBC92035CD9500355016 /* PermissionsManager.swift */; };
+		B764FBCE203602DD00355016 /* UIimage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B764FBCD203602DD00355016 /* UIimage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		B764FBC220343D9A00355016 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		B764FBC62034404A00355016 /* MemoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryCell.swift; sourceTree = "<group>"; };
 		B764FBC92035CD9500355016 /* PermissionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsManager.swift; sourceTree = "<group>"; };
+		B764FBCD203602DD00355016 /* UIimage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIimage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 		B764FBA82034361A00355016 /* Happy Days */ = {
 			isa = PBXGroup;
 			children = (
+				B764FBCB203602C100355016 /* Extensions */,
 				B764FBC82035CD8300355016 /* Model */,
 				B764FBC42034402600355016 /* UIKit */,
 				B764FBBF203436EE00355016 /* Configuration */,
@@ -140,6 +143,14 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		B764FBCB203602C100355016 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B764FBCD203602DD00355016 /* UIimage.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -216,6 +227,7 @@
 				B764FBCA2035CD9500355016 /* PermissionsManager.swift in Sources */,
 				B764FBC72034404A00355016 /* MemoryCell.swift in Sources */,
 				B764FBAC2034361A00355016 /* PermissionsViewController.swift in Sources */,
+				B764FBCE203602DD00355016 /* UIimage.swift in Sources */,
 				B764FBAA2034361A00355016 /* AppDelegate.swift in Sources */,
 				B764FBC320343D9A00355016 /* RootViewController.swift in Sources */,
 			);

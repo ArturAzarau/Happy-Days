@@ -59,8 +59,8 @@ final class RootViewController: UICollectionViewController {
     }
     
     private func getDocumentsDirectory() -> URL {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let documentsDirectory = paths[0]
+        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectory = urls[0]
         return documentsDirectory
     }
     
@@ -79,14 +79,14 @@ final class RootViewController: UICollectionViewController {
                 memories.append(memoryPath)
             }
         }
-        filteredMemories = memories
-        collectionView?.reloadSections(IndexSet(integer: 1))
+        filteredMemories = memories // return this
+        collectionView?.reloadSections(IndexSet(integer: 1)) // completion handler
     }
     
     // MARK: -
     
     private func saveNewMemory(image: UIImage) {
-        let memoryName = "memory- \(Date().timeIntervalSince1970)"
+        let memoryName = "memory-\(Date().timeIntervalSince1970)"
         let imageName = memoryName + ".jpg"
         let thumbnailImage = memoryName + ".thumb"
         
@@ -96,7 +96,7 @@ final class RootViewController: UICollectionViewController {
                 try jpegData.write(to: imagePath, options: [.atomicWrite])
             }
             
-            if let thumbnail = resize(image: image, to: 200) {
+            if let thumbnail = image.resize(to: 200) {
                 let imagePath = getDocumentsDirectory().appendingPathComponent(thumbnailImage)
                 if let jpegData = UIImageJPEGRepresentation(thumbnail, 80) {
                     try jpegData.write(to: imagePath, options: [.atomicWrite])
@@ -204,16 +204,7 @@ final class RootViewController: UICollectionViewController {
     
     // MARK: -
     
-    private func resize(image: UIImage, to width: CGFloat) -> UIImage? {
-        let scale = width / image.size.width
-        let height = image.size.height * scale
-        UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height) , false, 0)
-        image.draw(in: CGRect(x: 0, y: 0, width: width, height: height))
-        
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return newImage
-    }
+    
     
     // MARK: -
     
