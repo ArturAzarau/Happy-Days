@@ -22,6 +22,7 @@ final class RootViewController: UICollectionViewController {
     
     // MARK: - Properties
     
+    var permissionsManager = PermissionsManager()
     var memories = [URL]()
     var activeMemory: URL!
     var audioRecorder: AVAudioRecorder?
@@ -47,19 +48,15 @@ final class RootViewController: UICollectionViewController {
     // MARK: - Methods
     
     private func checkPermissions() {
-        let photoAuthorized = PHPhotoLibrary.authorizationStatus() == .authorized
-        let recordingAuthorized = AVAudioSession.sharedInstance().recordPermission() == .granted
-        let transcribeAuthorized = SFSpeechRecognizer.authorizationStatus() == . authorized
-        
-        let authorized = photoAuthorized && recordingAuthorized && transcribeAuthorized
-        
-        if !authorized {
-            let vc = UIStoryboard(name: "Permissions", bundle: Bundle.main).instantiateViewController(withIdentifier: "PermissionsVC")
-            navigationController?.present(vc, animated: true)
+        permissionsManager.checkPermissions { [weak self] (error) in
+            if error != nil {
+                DispatchQueue.main.async {
+                    let vc = UIStoryboard(name: "Permissions", bundle: Bundle.main).instantiateViewController(withIdentifier: "PermissionsVC")
+                    self?.navigationController?.present(vc, animated: true)
+                }
+            }
         }
     }
-    
-    // MARK: -
     
     private func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)

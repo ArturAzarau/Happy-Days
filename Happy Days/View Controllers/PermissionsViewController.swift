@@ -20,13 +20,16 @@ final class PermissionsViewController: UIViewController {
     
     // MARK: - Actions
     @IBAction func requestPermissions(_ sender: UIButton) {
-        permissionsManager.requestPermissions(errorHandler: { (error) in
-            DispatchQueue.main.async { [weak self] in
-                self?.helpLabel.text = error.localizedDescription
-            }
-        }) {
-            DispatchQueue.main.async { [weak self] in
-                self?.dismiss(animated: true)
+        permissionsManager.requestPermissions { (error) in
+            if let error = error {
+                DispatchQueue.main.async { [weak self] in
+                    self?.helpLabel.text = error.localizedDescription
+                }
+                return
+            } else {
+                DispatchQueue.main.async { [weak self] in
+                    self?.dismiss(animated: true)
+                }
             }
         }
     }

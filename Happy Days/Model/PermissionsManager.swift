@@ -11,9 +11,10 @@ import AVFoundation
 import Speech
 
 enum PermissionError: String {
-    case photos = "Photos"
-    case recording = "Recording"
-    case transcription = "Transcription"
+    case photos
+    case recording
+    case transcription
+    case notAuthorized
     
     private func errorMessage(about item: String) -> String {
         return "\(item) permission was declined; please enable it in settings then tap Continue again."
@@ -24,15 +25,16 @@ extension PermissionError: Error {}
 
 extension PermissionError: LocalizedError {
     var errorDescription: String? {
-        return errorMessage(about: self.rawValue)
+        return errorMessage(about: self.rawValue.uppercased())
     }
 }
 
+typealias CompletionHandler = (PermissionError?) -> ()
 struct PermissionsManager {
     
     // MARK: - Methods
-    
-    func requestPermissions(errorHandler: @escaping (_ error: PermissionError) -> (), completionHandler: @escaping  () -> ()) {
+ 
+    func requestPermissions(completion: CompletionHandler?) {
         
         // MARK: -
         func requestPhotosPermissions() {
@@ -40,7 +42,7 @@ struct PermissionsManager {
                 if authStatus == .authorized {
                     requestRecordPermissions()
                 } else {
-                    errorHandler(.photos)
+                    completion?(PermissionError.photos)
                 }
             }
         }
@@ -52,7 +54,7 @@ struct PermissionsManager {
                 if allowed {
                     requestTranscribePermissions()
                 } else {
-                    errorHandler(.recording)
+                    completion?(PermissionError.recording)
                 }
             }
         }
@@ -62,12 +64,20 @@ struct PermissionsManager {
         func requestTranscribePermissions() {
             SFSpeechRecognizer.requestAuthorization { authStatus in
                 if authStatus == .authorized {
-                    completionHandler()
+                    completion?(nil)
                 } else {
-                    errorHandler(.transcription)
+                    completion?(PermissionError.transcription)
                 }
             }
         }
         requestPhotosPermissions()
+    }
+    
+    func checkPermissions(completion: CompletionHandler?) {
+        let photoAuthorized = PHPhotoLibrary.authorizationStatus() == .authorized
+        let recordingAuthorized = AVAudioSession.sharedInstance().recordPermission() == .granted
+        let transcribeAuthorized = SFSpeechRecognizer.authorizationStatus() == . authorized
+        let authorized = photoAuthorized && recordingAuthorized && transcribeAuthorized
+        if !authorized { completion?(PermissionError.notAuthorized)}
     }
 }
