@@ -21,6 +21,10 @@ final class RootViewController: UICollectionViewController {
     // MARK: - Properties
     
     var memories = [URL]()
+    var activeMemory: URL!
+    var audioRecorder: AVAudioRecorder?
+    var recordingURL: URL!
+    var audioPlayer: AVAudioPlayer?
     
     // MARK: - Life cycle
     override func viewDidAppear(_ animated: Bool) {
@@ -33,6 +37,7 @@ final class RootViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadMemories()
+        recordingURL = getDocumentsDirectory().appendingPathComponent("recording.m4a")
     }
 
     // MARK: - Methods
@@ -94,11 +99,104 @@ final class RootViewController: UICollectionViewController {
                 if let jpegData = UIImageJPEGRepresentation(thumbnail, 80) {
                     try jpegData.write(to: imagePath, options: [.atomicWrite])
                 }
-                
             }
         } catch {
             print("Failed to save to disk")
         }
+    }
+    
+    // MARK: -
+    
+    @objc
+    private func memoryLongPress(sender: UILongPressGestureRecognizer) {
+        if sender.state == .began {
+            let cell = sender.view as! MemoryCell
+            if let index = collectionView?.indexPath(for: cell) {
+                activeMemory = memories[index.row]
+                recordMemory()
+            }
+        } else if sender.state == .ended {
+            finishRecording(success: true)
+        }
+    }
+    
+    // MARK: -
+    
+    private func recordMemory() {
+        audioPlayer?.stop()
+        collectionView?.backgroundColor = UIColor(red: 0.5, green: 0, blue: 0, alpha: 1)
+        
+        let recordingSession = AVAudioSession.sharedInstance()
+        
+        do {
+            try recordingSession.setCategory(AVAudioSessionCategoryPlayAndRecord, with: .defaultToSpeaker)
+            try recordingSession.setActive(true)
+            
+            let settings = [
+                AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+                AVSampleRateKey: 44100,
+                AVNumberOfChannelsKey: 2,
+                AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
+            ]
+            
+            audioRecorder = try AVAudioRecorder(url: recordingURL, settings: settings)
+            audioRecorder?.delegate = self
+            audioRecorder?.record()
+        } catch let error {
+            print("Failed to record: \(error.localizedDescription)")
+            finishRecording(success: false)
+        }
+    }
+    
+    // MARK: -
+    
+    private func finishRecording(success: Bool) {
+        collectionView?.backgroundColor = UIColor.darkGray
+        
+        audioRecorder?.stop()
+        
+        if success {
+            do {
+                let memoryAudioURL = activeMemory.appendingPathExtension("m4a")
+                let fm = FileManager.default
+                
+                if fm.fileExists(atPath: memoryAudioURL.path) {
+                    try fm.removeItem(at: memoryAudioURL)
+                }
+                
+                try fm.moveItem(at: recordingURL, to: memoryAudioURL)
+                
+                transcribeAudio(memory: activeMemory)
+            } catch let error {
+                print("Failure finishing recording: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    // MARK: -
+    
+    private func transcribeAudio(memory: URL) {
+        let audio = audioURL(for: memory)
+        let transcription = transcriptionURL(for: memory)
+        
+        let recognizer = SFSpeechRecognizer()
+        let request = SFSpeechURLRecognitionRequest(url: audio)
+        
+        recognizer?.recognitionTask(with: request, resultHandler: { [unowned self] (result, error) in
+            guard let result = result else {
+                print("There was an error: \(error!.localizedDescription)")
+                return
+            }
+            
+            if result.isFinal {
+                let text = result.bestTranscription.formattedString
+                do {
+                    try text.write(to: transcription, atomically: true, encoding: String.Encoding.utf8)
+                } catch {
+                    print("Failed to save transcription.")
+                }
+            }
+        })
     }
     
     // MARK: -
@@ -149,6 +247,15 @@ final class RootViewController: UICollectionViewController {
         let image = UIImage(contentsOfFile: imageName)
         cell.imageView.image = image
         
+        if cell.gestureRecognizers == nil {
+            let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(memoryLongPress))
+            recognizer.minimumPressDuration = 0.25
+            cell.addGestureRecognizer(recognizer)
+            
+            cell.layer.borderColor = UIColor.white.cgColor
+            cell.layer.borderWidth = 3
+            cell.layer.cornerRadius = 10
+        }
         return cell
     }
     
@@ -156,6 +263,30 @@ final class RootViewController: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         return collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: ReuseIdentifier.header, for: indexPath)
+    }
+    
+    // MARK: - Collection view delegate
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let memory = memories[indexPath.row]
+        let fm = FileManager.default
+        
+        do {
+            let audioName = audioURL(for: memory)
+            let transcriptionName = transcriptionURL(for: memory)
+            
+            if fm.fileExists(atPath: audioName.path) {
+                audioPlayer = try AVAudioPlayer(contentsOf: audioName)
+                audioPlayer?.play()
+            }
+            
+            if fm.fileExists(atPath: transcriptionName.path) {
+                let contents = try String(contentsOf: transcriptionName)
+                print(contents)
+            }
+        } catch {
+            print("Error loading audio")
+        }
     }
     
     // MARK: - Helper methods
@@ -204,4 +335,11 @@ extension RootViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
+extension RootViewController: AVAudioRecorderDelegate {
+    func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
+        if !flag {
+            finishRecording(success: false)
+        }
+    }
+}
 extension RootViewController: UINavigationControllerDelegate {}
