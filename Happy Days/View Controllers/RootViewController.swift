@@ -27,6 +27,8 @@ final class RootViewController: UICollectionViewController {
     var audioRecorder: AVAudioRecorder?
     var recordingURL: URL!
     var audioPlayer: AVAudioPlayer?
+    var filteredMemories = [URL]()
+    var searchQuery: CSSearchQuery?
     
     // MARK: - Life cycle
     override func viewDidAppear(_ animated: Bool) {
@@ -80,6 +82,7 @@ final class RootViewController: UICollectionViewController {
                 memories.append(memoryPath)
             }
         }
+        filteredMemories = memories
         collectionView?.reloadSections(IndexSet(integer: 1))
     }
     
@@ -114,7 +117,7 @@ final class RootViewController: UICollectionViewController {
         if sender.state == .began {
             let cell = sender.view as! MemoryCell
             if let index = collectionView?.indexPath(for: cell) {
-                activeMemory = memories[index.row]
+                activeMemory = filteredMemories[index.row]
                 recordMemory()
             }
         } else if sender.state == .ended {
@@ -235,6 +238,48 @@ final class RootViewController: UICollectionViewController {
         }
     }
     
+    // MARK: -
+    
+    private func filterMemories(text: String) {
+        guard text.count > 0 else {
+            filteredMemories = memories
+            
+            UIView.performWithoutAnimation {
+                collectionView?.reloadSections(IndexSet(integer: 1))
+            }
+            return
+        }
+        var allItems = [CSSearchableItem]()
+        searchQuery?.cancel()
+        
+        let queryString = "contentDescription == \"*\(text)*\"c"
+        searchQuery = CSSearchQuery(queryString: queryString, attributes: nil)
+        
+        searchQuery?.foundItemsHandler = { items in
+            allItems.append(contentsOf: items)
+        }
+        
+        searchQuery?.completionHandler = { error in
+            DispatchQueue.main.async { [unowned self] in
+                self.activateFilter(matches: allItems)
+            }
+        }
+        
+        searchQuery?.start()
+    }
+    
+    // MARK: -
+    
+    private func activateFilter(matches: [CSSearchableItem]) {
+        filteredMemories = matches.map { item in
+            return URL(fileURLWithPath: item.uniqueIdentifier)
+        }
+        
+        UIView.performWithoutAnimation {
+            collectionView?.reloadSections(IndexSet(integer: 1))
+        }
+    }
+    
     // MARK: - Actions
     
     @IBAction func addTapped(_ sender: UIBarButtonItem) {
@@ -256,7 +301,7 @@ final class RootViewController: UICollectionViewController {
         if section == 0 {
             return 0
         } else {
-            return memories.count
+            return filteredMemories.count
         }
     }
     
@@ -265,7 +310,7 @@ final class RootViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReuseIdentifier.cell, for: indexPath) as! MemoryCell
         
-        let memory = memories[indexPath.row]
+        let memory = filteredMemories[indexPath.row]
         let imageName = thumbnailURL(for: memory).path
         let image = UIImage(contentsOfFile: imageName)
         cell.imageView.image = image
@@ -291,7 +336,7 @@ final class RootViewController: UICollectionViewController {
     // MARK: - Collection view delegate
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let memory = memories[indexPath.row]
+        let memory = filteredMemories[indexPath.row]
         let fm = FileManager.default
         
         do {
@@ -365,4 +410,47 @@ extension RootViewController: AVAudioRecorderDelegate {
         }
     }
 }
+
+extension RootViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        filterMemories(text: searchText)
+    }
+    
+    // MARK: -
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+}
+
 extension RootViewController: UINavigationControllerDelegate {}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
