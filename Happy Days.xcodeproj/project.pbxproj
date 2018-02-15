@@ -15,6 +15,7 @@
 		B764FBC120343D6100355016 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B764FBC020343D6100355016 /* Main.storyboard */; };
 		B764FBC320343D9A00355016 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B764FBC220343D9A00355016 /* RootViewController.swift */; };
 		B764FBC72034404A00355016 /* MemoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B764FBC62034404A00355016 /* MemoryCell.swift */; };
+		B764FBCA2035CD9500355016 /* PermissionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B764FBC92035CD9500355016 /* PermissionsManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		B764FBC020343D6100355016 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		B764FBC220343D9A00355016 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		B764FBC62034404A00355016 /* MemoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryCell.swift; sourceTree = "<group>"; };
+		B764FBC92035CD9500355016 /* PermissionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 		B764FBA82034361A00355016 /* Happy Days */ = {
 			isa = PBXGroup;
 			children = (
+				B764FBC82035CD8300355016 /* Model */,
 				B764FBC42034402600355016 /* UIKit */,
 				B764FBBF203436EE00355016 /* Configuration */,
 				B764FBBE203436E500355016 /* Resources */,
@@ -127,6 +130,14 @@
 				B764FBC62034404A00355016 /* MemoryCell.swift */,
 			);
 			path = CollectionViewCell;
+			sourceTree = "<group>";
+		};
+		B764FBC82035CD8300355016 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B764FBC92035CD9500355016 /* PermissionsManager.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -202,6 +213,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B764FBCA2035CD9500355016 /* PermissionsManager.swift in Sources */,
 				B764FBC72034404A00355016 /* MemoryCell.swift in Sources */,
 				B764FBAC2034361A00355016 /* PermissionsViewController.swift in Sources */,
 				B764FBAA2034361A00355016 /* AppDelegate.swift in Sources */,
