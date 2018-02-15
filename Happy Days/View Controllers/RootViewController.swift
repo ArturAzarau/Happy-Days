@@ -10,6 +10,8 @@ import UIKit
 import AVFoundation
 import Photos
 import Speech
+import CoreSpotlight
+import MobileCoreServices
 
 private enum ReuseIdentifier {
     static let cell = "Memory"
@@ -192,6 +194,7 @@ final class RootViewController: UICollectionViewController {
                 let text = result.bestTranscription.formattedString
                 do {
                     try text.write(to: transcription, atomically: true, encoding: String.Encoding.utf8)
+                    self.indexMemory(memory: memory, text: text)
                 } catch {
                     print("Failed to save transcription.")
                 }
@@ -210,6 +213,26 @@ final class RootViewController: UICollectionViewController {
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return newImage
+    }
+    
+    // MARK: -
+    
+    private func indexMemory(memory: URL, text: String) {
+        let attributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeText as String)
+        attributeSet.title = "Happy Days Memory"
+        attributeSet.contentDescription = text
+        attributeSet.thumbnailURL = thumbnailURL(for: memory)
+        
+        let item = CSSearchableItem(uniqueIdentifier: memory.path, domainIdentifier: "arturazarau", attributeSet: attributeSet)
+        item.expirationDate = Date.distantFuture
+        
+        CSSearchableIndex.default().indexSearchableItems([item]) { (error) in
+            if let error = error {
+                print("Indexing error: \(error.localizedDescription)")
+            } else {
+                print("Search item successfully indexed: \(text)")
+            }
+        }
     }
     
     // MARK: - Actions
